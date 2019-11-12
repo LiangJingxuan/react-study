@@ -2,10 +2,10 @@ import React from 'react'
 
 import Items from './Items'
 
-export default function News() {
+export default function News(props) {
     return (
         <div>
-            <p>news页面</p>
+            <p>{props.title}</p>
             <Items />
         </div>
     )
