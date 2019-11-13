@@ -6,7 +6,7 @@ export default function News(props) {
     return (
         <div>
             <p>{props.title}</p>
-            <Items />
+            <Items {...props} />
         </div>
     )
 }

@@ -1,12 +1,17 @@
 import React from 'react'
 
-export default function Items() {
+export default function Items(props) {
+    // console.log(props)
     return (
         <ul>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
+            {
+                props.list.map(item=>{
+                    // console.log(item);
+                    return (
+                        <li key={item.id}>{item.name} --- {item.isCompleted?'已完成':'未完成'}</li>
+                    )
+                })
+            }
         </ul>
     )
 }
