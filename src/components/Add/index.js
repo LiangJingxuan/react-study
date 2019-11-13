@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {createRef} from 'react'
 
 import PropTypes from 'prop-types'
 
@@ -8,6 +8,8 @@ export default class Add extends React.Component {
         this.state = {
             inputValue: ''
         }
+        // 创建ref
+        this.inputDom = createRef();
     }
     // 类型检查
     static propTypes = {
@@ -26,13 +28,22 @@ export default class Add extends React.Component {
     }
     // 添加项目
     addItem = ()=>{
+        console.log(this.inputDom)
         // console.log(this.state)
-        this.props.add(this.state.inputValue)
+        if(this.state.inputValue===''){
+            return
+        }
+        this.props.add(this.state.inputValue);
+        this.setState({
+            inputValue: ''
+        },()=>{
+            this.inputDom.current.focus()
+        });
     }
     render (){ 
         return (
             <div>
-                <input onChange={this.addInput} type="text" value={this.state.inputValue} />
+                <input ref={this.inputDom} onChange={this.addInput} type="text" value={this.state.inputValue} />
                 <button onClick={this.addItem}>{this.props.title}</button>
             </div>
         )

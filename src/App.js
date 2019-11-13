@@ -14,13 +14,18 @@ export default class App extends Component {
                 {id:3,name:'vue',isCompleted:false},
                 {id:4,name:'angular',isCompleted:true},
                 {id:5,name:'javascript',isCompleted:false}
-            ],
-            itemAdd: (item)=>{
-                this.setState({
-                    title: '15d1a5'
-                })
-            }
+            ]
         }
+    }
+    // 添加事项
+    itemAdd = (item)=>{
+        this.setState({
+            todos: this.state.todos.concat({id:Math.random(),name:item,isCompleted:false})
+        })
+    }
+    // 修改状态
+    updateWork = (index)=>{
+        console.log(index)
     }
     render() {
         return (
@@ -29,8 +34,8 @@ export default class App extends Component {
                 <Home x={1} y={2}>
                     {this.state.desc}
                 </Home>
-                <Add add={this.state.itemAdd} />
-                <News title="事项列表" list={this.state.todos} />
+                <Add add={this.itemAdd} />
+                <News title="事项列表" list={this.state.todos} editWork={this.updateWork} />
                 
                 {/* 修改状态 */}
                 <SetState />
