@@ -7,15 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <button onclick="dispatch({
-        type: 'JIAN',
-        n: 1
-    })">-</button>
+    <button onclick="store.dispatch({type: 'JIAN',n: 1})">-</button>
     <span id="countDisplay"></span>
-    <button onclick="dispatch({
-        type: 'JIA',
-        n: 1
-    })">+</button>
+    <button onclick="store.dispatch({type: 'JIA',n: 1})">+</button>
 
     <script>
         const countDisplay = document.querySelector('#countDisplay');
@@ -25,35 +19,51 @@
             count: 5
         }
 
-        // 取值
-        const renderCount = (state)=>{
-            countDisplay.innerHTML = state.count;
-        }
-        renderCount(countState);
-
-        // 设置值
-        // const jian = (n)=>{
-        //     countState.count = countState.count-n;
-        //     renderCount(countState);
-
-        //     console.log(countState)
-        // }
-        const changeState = (action)=>{
+        const changeState = (state, action)=>{
+            if(!state){
+                return countState
+            }
             switch (action.type) {
                 case 'JIAN':
-                    countState.count -= action.n;
-                    break;
+                    return{
+                        ...state,
+                        count: state.count - action.n
+                    }
                 case 'JIA':
-                    countState.count += action.n;
-                    break;
+                    return{
+                        ...state,
+                        count: state.count + action.n
+                    }
                 default:
-                    break;
+                    return state;
             }
         }
-        const dispatch = (action)=>{
-            changeState(action);
-            renderCount(countState);
+
+        const createStore = (changeState)=>{
+            let state = null;
+            const getState = ()=>state;
+            const listeners = [];
+            const subscribe = (listener)=>listeners.push(listener);
+            const dispatch = (action)=>{
+                state = changeState(state, action);
+                listeners.forEach(listener=>listener());
+            }
+            dispatch({})
+            return {
+                getState,
+                changeState,
+                subscribe
+            }
         }
+
+        const store = createState(changeState);
+
+        // 显示
+        const renderCount = ()=>{
+            countDisplay.innerHTML =  store.getState().count;
+        }
+
+        store.subscribe(renderCount);
     </script>
 </body>
 </html>
