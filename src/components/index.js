@@ -1,5 +1,1 @@
-import BlogList from './BlogList'
-
-export{
-    BlogList
-}
+export { default as Loading } from './Loading'
